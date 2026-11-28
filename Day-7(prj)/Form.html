@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+    <div class="2xl:container mx-auto">
+        <div class="w-[90%] mx-auto flex justify-center items-center h-screen">
+            <div class="flex flex-col justify-center items-center border p-10 gap-5">
+                <h1>Login Form</h1>
+                <form id="form" novalidate>
+                    <div class="flex flex-col gap-2">
+                        <label>Email:</label>
+                        <input name="email" type="email" id="email" class="border required">
+                        <p class="text-red-500" id="emailError"></p>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label>Password:</label>
+                        <input name="password" type="password" id="password" class="border required">   
+                        <p class="text-red-500" id="passwordError"></p>
+                    </div>
+                    <div class="flex justify-center items-center gap-4 mt-3">
+                        <button id="button" class="bg-green-500 text-white px-4 py-2 rounded">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        const email=document.getElementById('email');
+        const password=document.getElementById('password');
+        const form=document.getElementById('form');
+        const emailError=document.getElementById('emailError');
+        const passwordError=document.getElementById('passwordError');
+
+        form.addEventListener('submit',(e)=>{
+            e.preventDefault();
+            var valid=advanced(email.value,password.value);
+            if(valid)
+            {
+                saveData(email.value,password.value);
+                form.reset();
+            }
+        })
+
+
+        var saveData=(email,password)=>{
+              const firebaseConfig = {
+                apiKey: "",
+                authDomain: "",
+                databaseURL: "",
+                projectId: "",
+                storageBucket: "",
+                messagingSenderId: "",
+                appId: ""
+            };
+
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.database().ref("NewData");
+            db.push({
+                email: email,
+                password: password,
+            });
+        }
+      
+
+
+
+        email.addEventListener('input',(e)=>{
+            const EmailRegex=/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+            if(EmailRegex.test(e.target.value))
+            {
+                emailError.textContent="";
+            }
+            else{
+                emailError.textContent="Email is invalid";
+            } 
+        })
+
+
+        password.addEventListener('input',(e)=>{
+            const PasswordRegex=/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+            if(PasswordRegex.test(e.target.value))
+            {
+                passwordError.textContent="";
+            }
+            else
+            {
+                passwordError.textContent="Password is invalid";
+            }
+        })
+
+
+
+        var advanced=(email,password)=>{
+            var valid=true;
+            const EmailRegex=/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+            const PasswordRegex=/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+
+            if(EmailRegex.test(email))
+            {
+                emailError.textContent="";
+            }
+            else{
+                emailError.textContent="Email is invalid";
+                valid=false;
+
+            }
+
+
+            if(PasswordRegex.test(password))
+            {
+                passwordError.textContent="";
+            }
+            else
+            {
+                passwordError.textContent="Password is invalid";
+                valid=false;
+            }
+            return valid;
+        }
+    </script>
+
+
+</body>
+</html>
