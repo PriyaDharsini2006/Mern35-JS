@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="flex items-center justify-center h-screen">
+        <div>
+        <h1 class="text-center text-2xl font-bold" id="message">Counter</h1>
+        <div>
+            <p id="count" class="text-center text-2xl font-bold"> 0</p>
+            <div class="flex gap-2">
+            <button  id="inc" class="border px-4 py-2 rounded-lg">Increase</button>
+            <button id="res" class="border px-4 py-2 rounded-lg">Reset</button>
+            <button id="dec" class="border px-4 py-2 rounded-lg">Decrease</button>
+            </div>
+        </div>
+        </div>
+
+    </div>
+    
+
+    <script>
+        let par=document.getElementById("count");
+
+        let inc=document.getElementById("inc");
+        let res=document.getElementById("res");
+        let dec=document.getElementById("dec");
+
+
+        var a=()=>{
+            if(par.textContent<0){
+            par.style.color="red";
+            }
+            else if(par.textContent>0){
+                par.style.color="green";
+            }
+            else{
+                par.style.color="black";
+            }
+        }
+
+
+        inc.addEventListener("click",()=>{
+            par.textContent=parseInt(par.textContent)+1;
+            a();
+        })
+
+
+        res.addEventListener("click",()=>{
+            par.textContent=0;
+            a();
+        })
+
+        dec.addEventListener("click",()=>{
+            par.textContent=parseInt(par.textContent)-1;
+            a();
+        })
+        
+    </script>
+</body>
+</html>
